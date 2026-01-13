@@ -27,10 +27,12 @@ public static class DBConexion
     public static List<PanelTarjeta> GetPanelTarjetasPendientes()
     {
         var config = ConfigReader.LoadConfig();
+        //alimentando de la config
         string connectionString = $"Server={config.host};Database={config.db};Uid={config.user};Pwd={config.pass};";
         int noTarjetas = config.noTarjetas;
+        string zupdate = config.zupdate;
+        
         var resultados = new List<PanelTarjeta>();
-
         try
         {
             using (var connection = new MySqlConnection(connectionString))
@@ -38,27 +40,31 @@ public static class DBConexion
                 connection.Open();
                 
                 string query = @" SELECT id,contenido,noTarjeta,servidor,ip,puerto,zupdate,idCentro,socnr,fecha 
-                               FROM `zora_windows`.`paneltarjetas` 
-                               WHERE `zupdate` = 'P' LIMIT " + noTarjetas;
+                                FROM `zora_windows`.`paneltarjetas` 
+                                WHERE `zupdate` = @zupdate LIMIT @noTarjetas";
                 
                 using (var command = new MySqlCommand(query, connection))
-                using (var reader = command.ExecuteReader())
                 {
-                    while (reader.Read())
+                    command.Parameters.AddWithValue("@zupdate", zupdate);
+                    command.Parameters.AddWithValue("@noTarjetas", noTarjetas);
+                    using (var reader = command.ExecuteReader())
                     {
-                        resultados.Add(new PanelTarjeta
+                        while (reader.Read())
                         {
-                            id       = reader.GetInt32("id"),
-                            contenido = reader["contenido"].ToString(),
-                            noTarjeta = reader["noTarjeta"].ToString(),
-                            servidor = reader["servidor"].ToString(),
-                            ip = reader["ip"].ToString(),
-                            puerto = reader["puerto"].ToString(),
-                            zupdate = reader["zupdate"].ToString(),
-                            idCentro = reader.GetInt32("idCentro"),
-                            socnr = reader["socnr"].ToString(),
-                            fecha = reader.GetDateTime("fecha")
-                        });
+                            resultados.Add(new PanelTarjeta
+                            {
+                                id       = reader.GetInt32("id"),
+                                contenido = reader["contenido"].ToString(),
+                                noTarjeta = reader["noTarjeta"].ToString(),
+                                servidor = reader["servidor"].ToString(),
+                                ip = reader["ip"].ToString(),
+                                puerto = reader["puerto"].ToString(),
+                                zupdate = reader["zupdate"].ToString(),
+                                idCentro = reader.GetInt32("idCentro"),
+                                socnr = reader["socnr"].ToString(),
+                                fecha = reader.GetDateTime("fecha")
+                            });
+                        }
                     }
                 }
             }
@@ -77,9 +83,10 @@ public static class DBConexion
         string connectionString = $"Server={config.host};Database={config.db};Uid={config.user};Pwd={config.pass};";
         
         string query = @"UPDATE `zora_windows`.`paneltarjetas` 
-                        SET `zupdate` = @zupdate, `intentos` = 1,
-                        `observaciones` = @obs
-                        WHERE `id` = @id";
+                    SET `zupdate` = @zupdate, 
+                    `intentos` = CASE WHEN `intentos` = 0 THEN 1 ELSE `intentos` + 1 END,
+                    `observaciones` = @obs
+                    WHERE `id` = @id";
         try
         {
             using (var connection = new MySqlConnection(connectionString))

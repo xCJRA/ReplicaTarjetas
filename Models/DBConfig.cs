@@ -8,5 +8,6 @@ public class DBConfig
     public string pathLog { get; set; }
     public string pathTar { get; set; }
     public string pathExe { get; set; }
+    public string zupdate { get; set; }
     public int noTarjetas { get; set;}
 }

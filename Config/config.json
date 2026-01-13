@@ -7,5 +7,6 @@
     "pathLog":"",
     "pathTar":"",
     "pathExe":"",
-    "noTarjetas":"50"
+    "noTarjetas":"50",
+    "zupdate":""
 }
