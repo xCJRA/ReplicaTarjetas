@@ -1,8 +1,7 @@
 using System.Diagnostics;
 public class Utilerias
 {
-    
-   public static string exec(string rutaExe, string ip, string puerto, string archivoXml, string archivoLog)
+    public static string exec(string rutaExe, string ip, string puerto, string archivoXml, string archivoLog)
     {
         string argumentos = $"{ip} {puerto} \"{archivoXml}\" \"{archivoLog}\"";
         
@@ -86,8 +85,8 @@ public class Utilerias
         
         
         // Escribir/agregar al final del archivo
-        string logMensaje = $"=== LOG {DateTime.Now:yyyy-MM-dd HH:mm:ss} ===\r\n" +
-                        $"=====================EMPIEZA=============================\r\n" +
+        string logMensaje = $"=====================EMPIEZA=============================\r\n" +
+                        $"=== LOG {DateTime.Now:yyyy-MM-dd HH:mm:ss} ===\r\n" + 
                         $"📊 {tarjetasPendientes} tarjetas pendientes encontradas:\r\n" +
                         $"=====================TERMINO=============================\r\n" +
                         $"=====================TarjetasOK: {contOK}=============================\r\n" +
@@ -111,9 +110,9 @@ public class Utilerias
         
         
         // Escribir/agregar al final del archivo
-        string logMensaje = $"=== LOG {DateTime.Now:yyyy-MM-dd HH:mm:ss} ===\r\n" +
-                        $"=====================EMPIEZA=============================\r\n" +
-                        $"📊 {logError} tarjetas pendientes encontradas:\r\n" +
+        string logMensaje =  $"=====================EMPIEZA=============================\r\n"  +
+                        $"=== LOG {DateTime.Now:yyyy-MM-dd HH:mm:ss} ===\r\n"+
+                        $"📊 {logError} \r\n" +
                         $"=====================TERMINO=============================\r\n";
         File.AppendAllText(rutaLog, logMensaje);
     }

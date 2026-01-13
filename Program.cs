@@ -9,6 +9,7 @@ var tarjetas = DBConexion.GetPanelTarjetasPendientes();
 int contOK = 0;
 int contER = 0;
 int fila   = 1;
+Console.WriteLine($"*********************************************************");
 Console.WriteLine($"\n📊 {tarjetas.Count} tarjetas pendientes encontradas:");
 foreach (var tarjeta in tarjetas)
 {
@@ -22,20 +23,23 @@ foreach (var tarjeta in tarjetas)
   string zupdate    = "PE";//pendiente envio a zora
   string pathXML    = param.archivoXml;
   string pathLog    = param.archivoLog;
-  string archivoXML = $"{config.pathXML}{pathXML.Trim()}";//es la direccion de la carpeta de tarjetas.
-  string archivoLog = $"{config.pathXML}{pathLog.Trim()}";//es la direccion de la carpeta de tarjetas.
+  string pathBaseXML= config.pathXML;
+  string archivoXML = $"{pathBaseXML}{pathXML.Trim()}";//es la direccion de la carpeta de tarjetas.
+  string archivoLog = $"{pathBaseXML}{pathLog.Trim()}";//es la direccion de la carpeta de tarjetas.
   string ip         = param.ip;
   string puerto     = param.puerto;
 
   //guardamos el xml a procesar.
-          
-  string rutaXml = "C:\\xampp\\htdocs\\tarjetas.xml";
+
+  string rutaXml = config.pathTar;//"C:\\xampp\\htdocs\\tarjetas.xml";
   
   ProcesarXmlTarjetas.procesa(param, rutaXml);
 
   //ejecutamos el otro programa.
-  string rutaExe = "C:\\ZORA\\PanelTarjetasAPI\\Sach1\\newExe\\eROI_Panel\\eROI_Panel.exe";
-  respuesta      = Utilerias.exec(rutaExe,ip,puerto,archivoXML,archivoLog);
+  
+  string rutaExe = config.pathExe;//"C:\\ZORA\\PanelTarjetasAPI\\Sach1\\newExe\\eROI_Panel\\eROI_Panel.exe";
+
+    respuesta      = Utilerias.exec(rutaExe,ip,puerto,archivoXML,archivoLog);
   
   string[] partes = respuesta.Split('|', StringSplitOptions.RemoveEmptyEntries);
   if (partes.Length > 0 && partes[0] == "ER")
@@ -47,16 +51,14 @@ foreach (var tarjeta in tarjetas)
   {
     contOK++;
   }
-  //Console.WriteLine("=====================RESPUESTA:=============================");
-  //Console.WriteLine($"{respuesta}");
   Console.WriteLine($"*********************** Actualizando tarjeta {tarjeta.noTarjeta}");
   DBConexion.ActualizarPanelTarjeta(idTarjeta,zupdate,respuesta);
-  //Console.WriteLine("=====================TERMINO=============================");
   fila++;
 }
 // ⏹️ FIN DEL CONTADOR
 stopwatch.Stop();
 TimeSpan tiempo = stopwatch.Elapsed;
+// MENSAJE FINAL
 Console.WriteLine("=====================TERMINO=============================");
 Console.WriteLine($"=====================TarjetasOK: {contOK}=============================");
 Console.WriteLine($"=====================TarjetasER: {contER}=============================");
