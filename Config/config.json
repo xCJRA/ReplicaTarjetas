@@ -1,9 +1,9 @@
 {
-    "host":"54.145.227.138",
-    "db":"zora_windows",
-    "user":"des12",
-    "pass":"des*12",
-    "pathXML":"C:\\xampp\\htdocs\\qas\\tarjetas\\",
+    "host":"",
+    "db":"",
+    "user":"",
+    "pass":"",
+    "pathXML":"",
     "pathLog":"",
     "noTarjetas":"50"
 }

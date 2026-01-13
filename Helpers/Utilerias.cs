@@ -51,7 +51,7 @@ public class Utilerias
                 
                 if (cancelado)
                 {
-                    return "ER|Error al conectarse al dispositivo";
+                    return $"ER|{outputAcumulado}";
                 }
                 
                 if (!process.HasExited)

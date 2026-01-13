@@ -1,4 +1,4 @@
-﻿ // ⏱️ INICIO DEL CONTADOR
+﻿// ⏱️ INICIO DEL CONTADOR
 var stopwatch = System.Diagnostics.Stopwatch.StartNew();
 
 //  Cargamos la cnf json
@@ -9,6 +9,7 @@ var tarjetas = DBConexion.GetPanelTarjetasPendientes();
 int contOK = 0;
 int contER = 0;
 int fila   = 1;
+Console.WriteLine($"\n📊 {tarjetas.Count} tarjetas pendientes encontradas:");
 foreach (var tarjeta in tarjetas)
 {
   
@@ -57,7 +58,6 @@ foreach (var tarjeta in tarjetas)
 stopwatch.Stop();
 TimeSpan tiempo = stopwatch.Elapsed;
 Console.WriteLine("=====================TERMINO=============================");
-Console.WriteLine($"\n📊 {tarjetas.Count} tarjetas pendientes encontradas:");
 Console.WriteLine($"=====================TarjetasOK: {contOK}=============================");
 Console.WriteLine($"=====================TarjetasER: {contER}=============================");
 Console.WriteLine($"\n⏱️ Tiempo total del foreach: {tiempo.Hours:00}:{tiempo.Minutes:00}:{tiempo.Seconds:00}.{tiempo.Milliseconds:000}");
