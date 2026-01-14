@@ -1,7 +1,7 @@
 using System.Xml.Linq;
 public class ProcesarXmlTarjetas
 {
-    public static void procesa(SachConfig param, string rutaXml)
+    public static void procesa(SachConfig param, string rutaXml,string salida)
     {
         // Cargar XML equivalente a simplexml_load_file
         XDocument xmlDoc = XDocument.Load(rutaXml);
@@ -24,7 +24,8 @@ public class ProcesarXmlTarjetas
                 if (value.CardNo != null && !string.IsNullOrEmpty(value.CardNo.Trim()))
                 {
                     string refnr = value.CardNo;
-                    Console.WriteLine($"RefNr: {refnr}");
+                    string vigencia = value.EndTime;
+                    Console.WriteLine($"RefNr: {refnr} Vigencia: {vigencia}");
                 }
                 
                 // $CfdiRelacionado = $cfdiComprobante->addChild('Cliente');
@@ -48,7 +49,7 @@ public class ProcesarXmlTarjetas
         }
         
         // Guardar XML modificado
-        xmlDoc.Save(rutaXml);
-        //Console.WriteLine("✅ XML actualizado");
+        xmlDoc.Save(salida);
+        Console.WriteLine($" XML actualizado {salida}");
     }
 }

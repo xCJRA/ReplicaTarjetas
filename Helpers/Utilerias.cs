@@ -3,8 +3,8 @@ public class Utilerias
 {
     public static string exec(string rutaExe, string ip, string puerto, string archivoXml, string archivoLog)
     {
-        string argumentos = $"{ip} {puerto} \"{archivoXml}\" \"{archivoLog}\"";
-        
+        string argumentos  = $"{ip} {puerto} \"{archivoXml}\" \"{archivoLog}\"";
+        string cmdCompleto = $"{rutaExe} {ip} {puerto} \"{archivoXml}\" \"{archivoLog}\"";
         var proceso = new ProcessStartInfo
         {
             FileName = rutaExe,
@@ -25,12 +25,12 @@ public class Utilerias
                 {
                     if (e.Data == null) return;
                     outputAcumulado += e.Data + "\n";
-                    if (e.Data.Contains("Connect device Failed! The error id is:"))
-                    {
-                        GuardarLogError(e.Data.ToString());
-                        cancelado = true;
-                        process.Kill(); // CIERRA el proceso inmediatamente
-                    }
+                    //if (e.Data.Contains("Connect device Failed! The error id is:"))
+                    //{
+                      //  GuardarLogError(e.Data.ToString());
+                        //cancelado = true;
+                        //process.Kill(); // CIERRA el proceso inmediatamente
+                    //}
                 };
                 
                 process.ErrorDataReceived += (sender, e) =>
@@ -50,7 +50,7 @@ public class Utilerias
                 
                 if (cancelado)
                 {
-                    return $"ER|{outputAcumulado}";
+                    return $"ER|[{cmdCompleto}]{outputAcumulado}";
                 }
                 
                 if (!process.HasExited)

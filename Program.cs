@@ -33,14 +33,14 @@ foreach (var tarjeta in tarjetas)
 
   string rutaXml = config.pathTar;//"C:\\xampp\\htdocs\\tarjetas.xml";
   
-  ProcesarXmlTarjetas.procesa(param, rutaXml);
+  ProcesarXmlTarjetas.procesa(param, rutaXml, archivoXML);
 
   //ejecutamos el otro programa.
   
   string rutaExe = config.pathExe;//"C:\\ZORA\\PanelTarjetasAPI\\Sach1\\newExe\\eROI_Panel\\eROI_Panel.exe";
 
-    respuesta      = Utilerias.exec(rutaExe,ip,puerto,archivoXML,archivoLog);
-  
+  respuesta      = Utilerias.exec(rutaExe,ip,puerto,archivoXML,archivoLog);
+  Console.WriteLine(respuesta);
   string[] partes = respuesta.Split('|', StringSplitOptions.RemoveEmptyEntries);
   if (partes.Length > 0 && partes[0] == "ER")
   {
@@ -51,8 +51,8 @@ foreach (var tarjeta in tarjetas)
   {
     contOK++;
   }
-  Console.WriteLine($"*********************** Actualizando tarjeta {tarjeta.noTarjeta}");
-  DBConexion.ActualizarPanelTarjeta(idTarjeta,zupdate,respuesta);
+  //Console.WriteLine($"*********************** Actualizando tarjeta {tarjeta.noTarjeta}");
+  //DBConexion.ActualizarPanelTarjeta(idTarjeta,zupdate,respuesta);
   fila++;
 }
 // ⏹️ FIN DEL CONTADOR
