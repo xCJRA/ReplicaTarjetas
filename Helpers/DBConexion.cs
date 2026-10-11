@@ -60,7 +60,7 @@ public static class DBConexion
                                 ip = reader["ip"].ToString(),
                                 puerto = reader["puerto"].ToString(),
                                 zupdate = reader["zupdate"].ToString(),
-                                idCentro = reader.GetInt32("idCentro"),
+                                idCentro = int.TryParse(reader["idCentro"]?.ToString(), out int idCentro) ? idCentro : 0,//es varchar, puede venir vacío
                                 socnr = reader["socnr"].ToString(),
                                 fecha = reader.GetDateTime("fecha")
                             });
