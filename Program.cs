@@ -51,8 +51,8 @@ foreach (var tarjeta in tarjetas)
   {
     contOK++;
   }
-  //Console.WriteLine($"*********************** Actualizando tarjeta {tarjeta.noTarjeta}");
-  //DBConexion.ActualizarPanelTarjeta(idTarjeta,zupdate,respuesta);
+  Console.WriteLine($"*********************** Actualizando tarjeta {tarjeta.noTarjeta}");
+  DBConexion.ActualizarPanelTarjeta(idTarjeta,zupdate,respuesta);
   fila++;
 }
 // ⏹️ FIN DEL CONTADOR

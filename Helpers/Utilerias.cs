@@ -25,12 +25,12 @@ public class Utilerias
                 {
                     if (e.Data == null) return;
                     outputAcumulado += e.Data + "\n";
-                    //if (e.Data.Contains("Connect device Failed! The error id is:"))
-                    //{
-                      //  GuardarLogError(e.Data.ToString());
-                        //cancelado = true;
-                        //process.Kill(); // CIERRA el proceso inmediatamente
-                    //}
+                    if (e.Data.Contains("Connect device Failed! The error id is:"))
+                    {
+                        GuardarLogError(e.Data.ToString());
+                        cancelado = true;
+                        process.Kill(); // CIERRA el proceso inmediatamente
+                    }
                 };
                 
                 process.ErrorDataReceived += (sender, e) =>
