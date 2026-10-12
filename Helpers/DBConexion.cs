@@ -60,7 +60,7 @@ public static class DBConexion
                                 ip = reader["ip"].ToString(),
                                 puerto = reader["puerto"].ToString(),
                                 zupdate = reader["zupdate"].ToString(),
-                                idCentro = reader.GetInt32("idCentro"),
+                                idCentro = int.TryParse(reader["idCentro"]?.ToString(), out int idCentro) ? idCentro : 0,//es varchar, puede venir vacío
                                 socnr = reader["socnr"].ToString(),
                                 fecha = reader.GetDateTime("fecha")
                             });
@@ -72,6 +72,7 @@ public static class DBConexion
         catch (Exception ex)
         {
             Console.WriteLine($"❌ Error en consulta: {ex.Message}");
+            Utilerias.GuardarLogError($"[{zupdate}] Error al consultar tarjetas pendientes ({resultados.Count} leídas antes del error) | {ex.GetType().Name}: {ex.Message}");
         }
 
         return resultados;
@@ -99,6 +100,8 @@ public static class DBConexion
                     command.Parameters.AddWithValue("@zupdate", zupdate);
                     command.Parameters.AddWithValue("@obs", observaciones);
                     int filasAfectadas = command.ExecuteNonQuery();
+                    if (filasAfectadas == 0)
+                        Utilerias.GuardarLogError($"UPDATE sin efecto: no se encontró la tarjeta ID {idTarjeta} para marcarla {zupdate}");
                     return filasAfectadas; // 1 = éxito, 0 = no encontró registro
                 }
             }
@@ -106,6 +109,7 @@ public static class DBConexion
         catch (Exception ex)
         {
             Console.WriteLine($"❌ Error UPDATE: {ex.Message}");
+            Utilerias.GuardarLogError($"No se pudo marcar la tarjeta ID {idTarjeta} como {zupdate} | {ex.GetType().Name}: {ex.Message}");
             return -1; // Error
         }
     }
